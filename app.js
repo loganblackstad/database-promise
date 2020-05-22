@@ -8,6 +8,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// app.use((req, res, next) => {
+//   console.log(req);
+//   next();
+// });
+
 const config = {
   host: "localhost",
   port: "5432",
@@ -16,11 +21,11 @@ const config = {
 };
 const db = pgp(config);
 
-// app.get("/api/restaurants/, (req, res) => {
-// db.query("SELECT * FROM restaurant").then((results) => {
-//   console.log(results);
-// });
-// });
+app.get("/api/restaurant/", (req, res) => {
+  db.query("SELECT * FROM restaurant").then((results) => {
+    console.log(results);
+  });
+});
 
 app.get("/api/restaurant/:id", (req, res) => {
   db.oneOrNone(
@@ -40,6 +45,13 @@ app.get("/api/restaurant/:id", (req, res) => {
           error: "Database Error",
         });
     });
+});
+
+app.post("/api/restaurant", (req,res) => {
+  const {name, distance, stars, category, fav_dish, takeout_avail, visit_date}
+  console.log(res.body);
+  db.one("INSERT INTO restaurant ")
+  .then((res))
 });
 
 app.listen(PORT, () => console.log(`Running on Port ${PORT}`));
